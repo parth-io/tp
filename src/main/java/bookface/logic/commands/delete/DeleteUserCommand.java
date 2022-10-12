@@ -9,6 +9,7 @@ import bookface.commons.core.index.Index;
 import bookface.logic.commands.CommandResult;
 import bookface.logic.commands.exceptions.CommandException;
 import bookface.model.Model;
+import bookface.model.book.Book;
 import bookface.model.person.Person;
 
 /**
@@ -41,6 +42,9 @@ public class DeleteUserCommand extends DeleteCommand {
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
+        for (Book book : personToDelete.getLoanedBooksSet()) {
+            model.returnLoan(book);
+        }
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));
     }

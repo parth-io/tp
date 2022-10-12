@@ -32,9 +32,7 @@ public class TypicalBooks {
         for (Book book : getTypicalBooks()) {
             ab.addBook(book);
         }
-        for (Person person: getSinglePerson()) {
-            ab.addPerson(person);
-        }
+        ab.addPerson(getSinglePerson());
         return ab;
     }
 
