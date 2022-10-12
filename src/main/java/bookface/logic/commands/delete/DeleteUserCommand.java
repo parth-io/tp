@@ -43,7 +43,7 @@ public class DeleteUserCommand extends DeleteCommand {
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
         for (Book book : personToDelete.getLoanedBooksSet()) {
-            model.returnLoan(book);
+            model.returnLoanedBook(book);
         }
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));

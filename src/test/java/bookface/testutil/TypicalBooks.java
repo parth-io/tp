@@ -8,7 +8,6 @@ import java.util.List;
 
 import bookface.model.BookFace;
 import bookface.model.book.Book;
-import bookface.model.person.Person;
 
 /**
  * A utility class containing a list of {@code Book} objects to be used in tests.
