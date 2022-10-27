@@ -14,7 +14,7 @@ import bookface.commons.util.AppUtil;
 public class Tag {
 
     public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String VALIDATION_REGEX = "^\\p{Alnum}+$";
 
     public final String tagName;
 
@@ -25,8 +25,9 @@ public class Tag {
      */
     public Tag(String tagName) {
         requireNonNull(tagName);
-        AppUtil.checkArgument(isValidTagName(tagName), MESSAGE_CONSTRAINTS);
-        this.tagName = tagName;
+        String trimmedTagName = tagName.trim();
+        AppUtil.checkArgument(isValidTagName(trimmedTagName), MESSAGE_CONSTRAINTS);
+        this.tagName = trimmedTagName;
     }
 
     /**

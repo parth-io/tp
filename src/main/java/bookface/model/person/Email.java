@@ -43,8 +43,9 @@ public class Email {
      */
     public Email(String email) {
         requireNonNull(email);
-        AppUtil.checkArgument(isValidEmail(email), MESSAGE_CONSTRAINTS);
-        value = email;
+        String trimmedEmail = email.trim();
+        AppUtil.checkArgument(isValidEmail(trimmedEmail), MESSAGE_CONSTRAINTS);
+        value = trimmedEmail;
     }
 
     /**

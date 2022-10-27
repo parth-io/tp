@@ -17,7 +17,7 @@ public class Author {
      * The first character of the address must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alpha}][\\p{Alpha} ]*";
+    public static final String VALIDATION_REGEX = "^[\\p{Alpha}][\\p{Alpha} ]*$";
 
     public final String bookAuthor;
 
@@ -28,8 +28,9 @@ public class Author {
      */
     public Author(String author) {
         requireNonNull(author);
-        AppUtil.checkArgument(isValidAuthor(author), MESSAGE_CONSTRAINTS);
-        bookAuthor = author;
+        String trimmedAuthor = author.trim();
+        AppUtil.checkArgument(isValidAuthor(trimmedAuthor), MESSAGE_CONSTRAINTS);
+        bookAuthor = trimmedAuthor;
     }
 
     /**

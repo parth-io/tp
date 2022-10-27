@@ -10,7 +10,7 @@ import bookface.logic.parser.exceptions.ParseException;
  */
 public class ReturnCommandParser implements Parseable<ReturnCommand> {
 
-    public static final String VALIDATION_REGEX = "(\\d+)";
+    public static final String VALIDATION_REGEX = "^\\d+$";
 
     /**
      * Parses the given {@code String} of arguments in the context of the LoanCommand

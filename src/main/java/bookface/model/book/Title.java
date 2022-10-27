@@ -17,7 +17,7 @@ public class Title {
      * The first character of the address must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}\\p{Punct}][\\p{Alnum}\\p{Punct} ]*";
+    public static final String VALIDATION_REGEX = "^[\\p{Alnum}\\p{Punct}][\\p{Alnum}\\p{Punct} ]*$";
 
     public final String bookTitle;
 
@@ -28,8 +28,9 @@ public class Title {
      */
     public Title(String title) {
         requireNonNull(title);
-        AppUtil.checkArgument(isValidTitle(title), MESSAGE_CONSTRAINTS);
-        bookTitle = title;
+        String trimmedTitle = title.trim();
+        AppUtil.checkArgument(isValidTitle(trimmedTitle), MESSAGE_CONSTRAINTS);
+        bookTitle = trimmedTitle;
     }
 
     /**
