@@ -26,6 +26,9 @@ class JsonSerializableBookFace {
 
     public static final String MESSAGE_DUPLICATE_BOOK = "Books list contains duplicate book(s).";
 
+    public static final String MESSAGE_INVALID_LOANED_BOOK = "A Book is detected as a loaned Book when it "
+            + "should not be loaned.";
+
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
 
     private final List<JsonAdaptedBook> books = new ArrayList<>();
@@ -67,7 +70,8 @@ class JsonSerializableBookFace {
             if (person.hasBooksOnLoan()) {
                 Set<Book> loanedBooks = person.getLoanedBooksSet();
                 for (Book book : loanedBooks) {
-                    Date returnDate = book.getReturnDate();
+                    Date returnDate = book.getReturnDate()
+                            .orElseGet(bookface.commons.util.Date::getFourteenDaysLaterDate);
                     book.loanTo(person, returnDate);
                     bookFace.addBook(book);
                 }
@@ -78,6 +82,8 @@ class JsonSerializableBookFace {
             Book book = jsonAdaptedBook.toModelType();
             if (bookFace.hasBook(book)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_BOOK);
+            } else if (book.isLoaned() || book.getReturnDateString().isPresent()) {
+                throw new IllegalValueException((MESSAGE_INVALID_LOANED_BOOK));
             }
             bookFace.addBook(book);
         }

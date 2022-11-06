@@ -24,7 +24,8 @@ public class LoanCommand extends Command {
     public static final String MESSAGE_USAGE = Command.generateMessage(COMMAND_WORD, "Loans to the"
             + " user identified by the index number in user list from the book identified by the index number in book"
             + " list", "USER_INDEX (must be a positive integer), BOOK_INDEX (must be a "
-            + "positive integer)", COMMAND_WORD + " 3 2");
+            + "positive integer), [DUE_DATE] (refer to User Guide for valid date formats)",
+            COMMAND_WORD + " 3 2 [2022-10-30]");
 
     public static final String MESSAGE_LOAN_SUCCESS = "User %1$s loaned book %2$s. (Due date: %3$s)";
 
@@ -58,11 +59,9 @@ public class LoanCommand extends Command {
     public LoanCommand(Index userIndex, Index bookIndex) {
         this.targetUserIndex = userIndex;
         this.targetBookIndex = bookIndex;
-        long millis = System.currentTimeMillis();
-        Date todayDate = new Date(millis);
-        // Code below is effectively borrowed from
-        // https://stackoverflow.com/questions/12087419/adding-days-to-a-date-in-java
-        this.returnDate = new Date(todayDate.getTime() + TimeUnit.DAYS.toMillis(14));
+        // @@author sprintaway-reused
+        // Reused from https://stackoverflow.com/questions/12087419/adding-days-to-a-date-in-java
+        this.returnDate = new Date(new Date().getTime() + TimeUnit.DAYS.toMillis(14));
         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         this.parsedDate = formatter.format(returnDate);
     }
@@ -93,6 +92,15 @@ public class LoanCommand extends Command {
         model.updateFilteredBookList(Model.PREDICATE_SHOW_ALL_BOOKS);
         return new CommandResult(String.format(MESSAGE_LOAN_SUCCESS, personToLoan.getName(),
                 bookToLoan.getTitle(), parsedDate));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof LoanCommand // instanceof handles nulls
+                && targetUserIndex.equals(((LoanCommand) other).targetUserIndex)
+                && targetBookIndex.equals(((LoanCommand) other).targetBookIndex)
+                && parsedDate.equals(((LoanCommand) other).parsedDate));
     }
 }
 

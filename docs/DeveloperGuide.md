@@ -14,6 +14,7 @@ title: Developer Guide
   - [Storage component](#storage-component)
   - [Common classes](#common-classes)
 - [Implementation](#implementation)
+  - [Command Parsing](#command-parsing)
   - [Add](#add-feature)
   - [Delete](#delete-feature)
   - [List](#list-feature)
@@ -55,6 +56,30 @@ com/a/14018549/13742805</a>
 <td markdown="span"><a href="https://github.com/AY2223S1-CS2103-F14-4/tp/tree/master/src/main/java/bookface/logic
 /parser/CommandParser.java">CommandParser.java</a></td>
 <td markdown="span">Force subclasses to have the same initial method calls</td>
+</tr>
+<tr>
+<td markdown="span"><a href="https://stackoverflow.com/a/30974991/13742805">https://stackoverflow.com/a/30974991/13742805</a>
+</td>
+<td markdown="span"><a href="https://github.com/AY2223S1-CS2103-F14-4/tp/tree/master/src/main/java/bookface/commons/util/LambdaUtil.java">CommandParser.java</a></td>
+<td markdown="span">A lambda function that throws a checked Exception</td>
+</tr>
+<tr>
+<td markdown="span"><a href="https://stackoverflow.com/questions/12087419/adding-days-to-a-date-in-java">https://stackoverflow.com/questions/12087419/adding-days-to-a-date-in-java</a>
+</td>
+<td markdown="span"><a href=https://github.com/AY2223S1-CS2103-F14-4/tp/blob/master/src/main/java/bookface/logic/commands/LoanCommand.java>LoanCommand.java</a></td>
+<td markdown="span">Add certain number of days to the current day</td>
+</tr>
+<tr>
+<td markdown="span"><a href="https://stackoverflow.com/questions/62054264/check-invalid-date-by-localdate">https://stackoverflow.com/questions/62054264/check-invalid-date-by-localdate</a>
+</td>
+<td markdown="span"><a href="https://github.com/AY2223S1-CS2103-F14-4/tp/blob/master/src/main/java/bookface/logic/parser/LoanCommandParser.java">LoanCommandParser.java</a></td>
+<td markdown="span">Parse dates properly</td>
+</tr>
+<tr>
+<td markdown="span"><a href="https://www.ocpsoft.org/prettytime/nlp/">PrettyTimeParser library</a>
+</td>
+<td markdown="span"><a href="https://github.com/AY2223S1-CS2103-F14-4/tp/blob/master/src/main/java/bookface/logic/parser/LoanCommandParser.java">LoanCommandParser.java</a></td>
+<td markdown="span">Allow for higher amounts of flexibility of date formats</td>
 </tr>
 </tbody>
 </table>
@@ -218,7 +243,8 @@ This approach was chosen to reduce code duplication, and to manage the complexit
 
 Enums were chosen, as they use less memory (as enums are `final` subclasses of java.lang.Enum) than HashMap for key-value storage, and are easy to modify. Furthermore, they help to ensure type-checking during compile-time, preventing bugs. They also have a semantic value; they represent to both readers and future developers the current allowed constants.
 
-### Adding a book/user
+### Add feature
+#### Adding a book/user
 
 The `add` command is an important command that is commonly used in BookFace. It allows the user to add a new book or a user to the system.
 
@@ -242,10 +268,31 @@ The following is the sequence diagram for this operation:
 #### Adding a user with `add user`
 *To be updated.*
 
-
 ### Delete feature
+#### Deleting a book/user
+The `delete` allows the user to delete a book or a user from the system.
 
+#### Deleting a book with `delete book`
 
+`delete book` deletes a book from the model. Specifically, `ModelManager` maintains a list of books and contains the method `deleteBook()` that is invoked by `DeleteBookCommand`to perform this deletion.
+
+The sequence diagram below illustrates the interactions within the `Logic` component for the `execute("delete user 1")` API call.
+
+![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
+
+#### Deleting a user with `delete user`
+`delete book` deletes a user from the model. Specifically, `ModelManager` maintains a list of users and contains the method `deletePerson()` that is invoked by `DeleteUserCommand` to perform this deletion.
+
+The sequence diagram is rather similar to that of `delete book`, so in the interest of brevity, it has been omitted.
+
+#### Activity Diagram
+
+The following activity diagram summarizes what happens when the librarian executes a `delete` command:
+
+![DeleteActivityDiagram](images/DeleteActivityDiagram.png)
 
 
 ### List feature
@@ -256,10 +303,13 @@ The list mechanism is facilitated by `LogicManager`. During its process of parsi
 a new `ListCommandParser` will be created to internally parse the argument of the command
 through `ListSubcommand`.
 
-Currently, there are 2 possible `Command` classes that can be returned from `ListSubcommand`, and
+Currently, there are 5 possible `Command` classes that can be returned from `ListSubcommand`, and
 they are created in respect to the subcommand that is parsed:
 * `ListBooksCommand` for `Book` upon the command `list books`
 * `ListUsersCommand` for `Person` upon the command `list users`
+* `ListALLCommand` for both `Book` and `Person` upon the command `list all`
+* `ListLoansCommand` for both `Book` and `Person` upon the command `list loans`
+* `ListOverdueCommand` for both `Book` and `Person` upon the command `list overdue`
 
 Given below is an example usage scenario and how the list mechanism behaves
 at each step.
@@ -289,33 +339,6 @@ the end of diagram.</div>
 The following activity diagram summarizes what happens when a user executes a list command:
 
 ![ListActivityDiagram](images/ListActivityDiagram.png)
-
-### Deleting a book/user
-The `delete` allows the user to delete a book or a user from the system.
-
-#### Deleting a book with `delete book`
-
-`delete book` deletes a book from the model. Specifically, `ModelManager` maintains a list of books and contains the method `deleteBook()` that is invoked by `DeleteBookCommand`to perform this deletion.
-
-The sequence diagram below illustrates the interactions within the `Logic` component for the `execute("delete user 
-1")` API call.
-
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-</div>
-
-#### Deleting a user with `delete user`
-`delete book` deletes a user from the model. Specifically, `ModelManager` maintains a list of users and contains the method `deletePerson()` that is invoked by `DeleteUserCommand` to perform this deletion.
-
-The sequence diagram is rather similar to that of `delete book`, so in the interest of brevity, it has been omitted.
-
-#### Activity Diagram
-
-The following activity diagram summarizes what happens when the librarian executes a `delete` command:
-
-![DeleteActivityDiagram](images/DeleteActivityDiagram.png)
-
 
 ### Find feature
 
@@ -432,8 +455,10 @@ to `UniquePersonList` and vice versa, resulting in less coupling and ease of int
 in the future.
 
 One issue is that the `UniquePersonList` and `BookList` do not refresh their UI
-automatically and we resorted to getting the index of each list to set their
+automatically, and we resorted to getting the index of each list to set their
 internal `ObservableLists` to 'refresh' their UI.
+
+We have chosen to use an external `PrettyTimeParser` library here to allow for higher degrees of flexibility for input. One downside however is that it uses Natural Language Processing, and it may cause unintended parsing behaviours that is difficult to resolve since Natural Language Processing is beyond the scope of this module. In this case, invalid dates such as `2075-99-99` are accepted as valid dates by the library, and we have decided to check only for the two most common date formats, `dd/MM/yyyy` and `yyyy-MM-dd`.
 
 ### Return feature
 
@@ -603,6 +628,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user                               | delete patrons from my library |                                                        |
 | `* * *`  | user                               | add loans                      | mark books as unavailable                              |
 | `* * *`  | user                               | mark loans as returned         | mark books as available                                |
+| `* * *`  | user                               | view the overdue books         |                                                        |
 | `* * *`  | person who likes to talk to others | type my commands to a CLI      | so I can work while interacting with my patrons        |
 
 *{More to be added}*
