@@ -8,7 +8,11 @@ title: BookFace
 
 ![Ui](images/Ui.png)
 
+[//]: # (@@author parth-io-reused)
+
 This is a fake update.
+
+[//]: # (@@author)
 
 * If you are interested in using BookFace, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
 * If you are interested about developing BookFace, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
