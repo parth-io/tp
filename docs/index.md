@@ -14,6 +14,12 @@ This is a fake update.
 
 [//]: # (@@author)
 
+<!-- @@author ekweirui -->
+
+Another choker
+
+<!-- @@author -->
+
 [//]: # (@@author parth-io)
 
 Doubly fake update.
