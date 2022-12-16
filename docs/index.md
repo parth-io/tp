@@ -12,6 +12,12 @@ title: BookFace
 
 This is a fake update.
 
+```python
+# @@author parth-io
+This is just a test for very unusual scenarios where people might use @@author in their files, such as in code blocks
+# @@author
+```
+
 [//]: # (@@author)
 
 <!-- @@author ekweirui -->
