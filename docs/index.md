@@ -8,7 +8,7 @@ title: BookFace
 
 ![Ui](images/Ui.png)
 
-BookFace replaces a paper-based system or manual tracking of books, providing greater speed/efficiency in managing and accessing book and user records. While it has a GUI, most of the user interactions happen using a CLI (Command Line Interface).
+This is a fake update.
 
 * If you are interested in using BookFace, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
 * If you are interested about developing BookFace, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
